@@ -60,24 +60,13 @@ export default {
     },
 
     test() {
-      alert(123)
+      // alert(123)
       this.$refs.loginForm.validate(async flag => {
         if (!flag) return
-         const test = this.formData.test
+        const test = this.formData.test
         const isExist = await this.$store.dispatch('test', test)
-        if (isExist) {
-                  alert('ok')
-                } else {
-                  // 将昵称存入本地, 跳转到主页
-                  alert("不行")
-                }
-    //     if (isExist) {
-    //       MessageBox.alert('该昵称已被人使用啦!')
-    //     } else {
-    //       // 将昵称存入本地, 跳转到主页
-    //       localStorage.setItem('nickname', nickname)
-    //       this.$router.push('/home')
-    //     }
+        console.log(isExist);
+
       })
     }
   }

@@ -5,7 +5,7 @@ module.exports = httpServer => {
     const server = io(httpServer)
     const user2socket = {}
     const socket2user = {}
-
+	const message = ""
     let currentGame = null
 
  server.on("text", function (str) {
@@ -25,6 +25,14 @@ module.exports = httpServer => {
     })
 
     server.on('connection', socket => {
+
+
+        // 测试
+        // ------------------------------------------------------------
+        socket.on('test', (message, callback) => {
+			console.log(message)
+            callback("这是服务器发的")
+        })
 
         // 【事件】检查昵称是否已占用
         // ------------------------------------------------------------
