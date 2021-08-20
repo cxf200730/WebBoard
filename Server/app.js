@@ -15,6 +15,7 @@ const fs = require("fs");
 
 
 const teacherRouter = require('./routes/teacher.js')
+const studentRouter = require('./routes/student.js')
 // const examRouter = require('./routes/exam.js')
 const cors = require('cors')
 app.use(cors())
@@ -45,6 +46,7 @@ app.get('/token', (req, res, next) => {
 
 // app.use( '/teacher', teacherRouter)
 app.use( '/teacher', teacherRouter)
+app.use( '/student', studentRouter)
 // app.use( '/exam', examRouter)
 
 // view engine setup

@@ -10,7 +10,7 @@ const state = {
   teacherphones: [], // 房间用户昵称列表
   holder: '', // 游戏主持人
   lines: [] ,// 房间的绘图信息 (画了多少根线)
-  messages:[]
+  messages:[],
 }
 
 const mutations = {
@@ -35,7 +35,6 @@ const mutations = {
   addTomessages(state, message) {
     state.messages.push(message)
   },
-
   addToteacherphones(state, teacherphone) {
     if (!state.teacherphones.includes(teacherphone)) {
       state.teacherphones.push(teacherphone)
@@ -64,7 +63,7 @@ const actions = {
     })
   },
 
-
+ 
   // 确认用户名是否存在
   checkUserExist(context, teacherphone) {
     return new Promise((resolve, reject) => {

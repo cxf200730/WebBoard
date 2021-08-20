@@ -36,7 +36,6 @@ module.exports = httpServer => {
             socket.broadcast.emit('user_send', message)
             callback( message)
         })
-
         // 【事件】检查昵称是否已占用
         // ------------------------------------------------------------
         socket.on('- ---------------*ck_user_exist', (teacherphone, callback) => {

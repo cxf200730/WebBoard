@@ -34,6 +34,7 @@
         size="small"
         icon="el-icon-magic-stick"
         @click="answerGameHandler"
+        style="margin-top:20px"
       >回答问题</el-button>
 
       <el-button
@@ -41,6 +42,7 @@
         size="small"
         icon="el-icon-switch-button"
         @click="exitHandler"
+        style="margin-top:5px;margin-left:0"
       >退出课堂</el-button>
     </div>
 
