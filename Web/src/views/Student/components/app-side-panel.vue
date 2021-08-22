@@ -1,79 +1,41 @@
 <template>
   <el-card>
-    <!-- 玩家列表 -->
-    <div class="panel-area">
-      <ul class="participants">
-        <li v-for="item in teacherphones" :key="item">
-          <span>{{ item }} {{ item === teacherphone ? '（我）' : '' }}</span>
-          <el-tag v-if="item === holder" size="mini">老师</el-tag>
-        </li>
-      </ul>
-    </div>
-
-    <!-- 按钮工具栏 -->
-    <div class="panel-area button-area">
-      <el-button
-        v-if="!isGameStarted"
-        type="primary"
-        size="small"
-        icon="el-icon-edit"
-        @click="startGameHandler"
-      >开始上课</el-button>
-
-      <el-button
-        v-if="isGameStarted && teacherphone === holder"
-        type="warning"
-        size="small"
-        icon="el-icon-delete"
-        @click="stopGameHandler"
-      >结束上课</el-button>
-
-      <el-button
-        v-if="isGameStarted && teacherphone !== holder"
-        type="success"
-        size="small"
-        icon="el-icon-magic-stick"
-        @click="answerGameHandler"
-      >回答问题</el-button>
-
-      <el-button
-        type="danger"
-        size="small"
-        icon="el-icon-switch-button"
-        @click="exitHandler"
-      >退出课堂</el-button>
-    </div>
-
-    <!-- 弹出框：老师设置答案 -->
-    <el-dialog
-      title="请设置答案"
-      :visible.sync="resultDialogVisible"
-      width="30%"
+    <!-- 试卷列表 -->
+    <el-table
+      :data="tableData"
+      height="150"
+      border
+      style="width: 100%"
+      size="mini"
+      highlight-current-row
     >
-      <el-input v-model="expectImageName" placeholder="请输入您的答案" />
-
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="resultDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveDialogHandler">确 定</el-button>
-      </span>
-    </el-dialog>
-
-    <!-- 弹出框：答题人设置答案 -->
-    <el-dialog
-      title="请填写答案"
-      :visible.sync="answerDialogVisible"
-      width="30%"
-    >
-      <el-input v-model="inputImageName" placeholder="请输入您的答案" />
-
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="answerDialogVisible = false">取 消</el-button>
-        <el-button
-          type="primary"
-          @click="saveAnswerDialogHandler"
-        >确 定</el-button>
-      </span>
-    </el-dialog>
+      <el-table-column
+      type="index"
+      width="50">
+    </el-table-column>
+      <el-table-column
+        prop="date"
+        label="文件名称"
+        width="120"
+        >
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="提交状态"
+        width="56">
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="完成状态"
+        width="56">
+      </el-table-column>
+      <el-table-column
+        prop="address"
+        label="订正状态"
+        width="56"
+        >
+      </el-table-column>
+    </el-table>
   </el-card>
 </template>
 
@@ -86,7 +48,36 @@ export default {
       resultDialogVisible: false,
       expectImageName: '',
       answerDialogVisible: false,
-      inputImageName: ''
+      inputImageName: '',
+      tableData: [{
+          date: '第五讲 扫雷',
+          name: '',
+          address: ''
+        }, {
+          date: '2016-08-22',
+          name: '',
+          address: ''
+        }, {
+          date: '2016-08-24',
+          name: '',
+          address: ''
+        }, {
+          date: '2016-08-21',
+          name: '',
+          address: ''
+        }, {
+          date: '2016-08-28',
+          name: '',
+          address: ''
+        }, {
+          date: '2016-08-26',
+          name: '',
+          address: ''
+        }, {
+          date: '2016-08-27',
+          name: '',
+          address: ''
+        }]
     }
   },
 
@@ -155,8 +146,15 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
+
 .panel-area {
   margin: 10px 0;
 }
+/deep/ .el-table{
+  .el-table_body-wrapper{
+    height: 10px
+  }
+}
+
 </style>

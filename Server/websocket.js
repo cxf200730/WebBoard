@@ -30,26 +30,46 @@ module.exports = httpServer => {
         // 测试
         // ------------------------------------------------------------
         socket.on('sendMessage', (message,callback) => {
-			
-
+			const teacherphone = message.teacherphone
+            const msg = message.msg
+            const send = teacherphone + "：" + msg
+            console.log(send);
             // 发送消息给其他用户
-            socket.broadcast.emit('user_send', message)
+            if(teacherphone === "20210101"){
+                server.sockets.in('20210101').emit('user_send', send)
+            }else if(teacherphone === "20210102"){
+                server.sockets.in('20210102').emit('user_send', send)
+            }else if(teacherphone === "1"){
+                server.sockets.in('20210101').emit('user_send', send)
+                socket.broadcast.to('20210102').emit('user_send', send)
+            }
+            // socket.broadcast.emit('user_send', message)
             callback( message)
         })
-        // 【事件】检查昵称是否已占用
+       
+        // 【事件】用户进入教室
         // ------------------------------------------------------------
-        socket.on('- ---------------*ck_user_exist', (teacherphone, callback) => {
-            callback(!!user2socket[teacherphone])
-        })
-
-        // 【事件】用户进入游戏
-        // ------------------------------------------------------------
-        socket.on('enter', (teacherphone) => {
+        socket.on('enter', (obj) => {
             const sid = socket.id
-
+            let teacherphone = obj.teacherphone
+            const type = obj.type
+            // console.log(teacherphone + " " + type);
             // 添加用户信息
             user2socket[teacherphone] = sid
             socket2user[sid] = teacherphone
+            
+            if(teacherphone === "20210101"){
+                socket.join('20210101')
+                // server.sockets.in('20210101').emit('user_send', teacherphone)
+            }else if(teacherphone === "20210102"){
+                socket.join('20210102')
+                // server.sockets.in('20210102').emit('user_send', teacherphone)
+            }else if(teacherphone === "1"){
+                socket.join('20210101')
+                socket.join('20210102')
+                // server.sockets.in('20210101').emit('user_send', teacherphone)
+                // socket.broadcast.to('20210102').emit('user_send', teacherphone)
+            }
 
             // 发送用户列表给当前用户
             socket.emit('room_info', {
@@ -57,9 +77,10 @@ module.exports = httpServer => {
                 holder: currentGame && currentGame.holder,
                 lines: currentGame && currentGame.lines || []
             })
-
+            // socket.broadcast.to('20210101').emit('user_send', teacherphone)
+            // server.sockets.in('20210101').emit('user_send', teacherphone)
             // 发送新进用户给其他用户
-            socket.broadcast.emit('user_enter', teacherphone)
+            socket.broadcast.to('20210101').emit('user_enter', teacherphone)
         })
 
         // 【事件】用户离开游戏
@@ -139,18 +160,41 @@ module.exports = httpServer => {
 
         // 【事件】用户绘图
         // ------------------------------------------------------------
-        socket.on('new_line', (line) => {
-            if (currentGame&& currentGame.lines) {
-                currentGame.lines.push(line)
-                socket.broadcast.emit('starting_line', line)
-            }
+        socket.on('new_line', (obj) => {
+            let line = obj.line
+            let teacherphone = obj.teacherphone
+            // if (currentGame&& currentGame.lines) {
+                // currentGame.lines.push(line)
+
+                if(teacherphone === "20210101"){
+                    socket.broadcast.to('20210101').emit('starting_line', obj)
+                }else if(teacherphone === "20210102"){
+                    socket.broadcast.to('20210102').emit('starting_line', obj)
+                }else if(teacherphone === "1"){
+                    socket.broadcast.to('20210101').emit('starting_line', obj)
+                    socket.broadcast.to('20210102').emit('starting_line', obj)
+                }
+
+                // socket.broadcast.emit('starting_line', line)
+            // }
         })
 
-        socket.on('update_line', (line) => {
-            if (currentGame&& currentGame.lines) {
-                currentGame.lines[currentGame.lines.length - 1] = line
-                socket.broadcast.emit('updating_line', line)
-            }
+        socket.on('update_line', (obj) => {
+            let line = obj.line
+            let teacherphone = obj.teacherphone
+            // if (currentGame&& currentGame.lines) {
+                // currentGame.lines[currentGame.lines.length - 1] = line
+
+                if(teacherphone === "20210101"){
+                    socket.broadcast.to('20210101').emit('updating_line', obj)
+                }else if(teacherphone === "20210102"){
+                    socket.broadcast.to('20210102').emit('updating_line', obj)
+                }else if(teacherphone === "1"){
+                    socket.broadcast.to('20210101').emit('updating_line', obj)
+                    socket.broadcast.to('20210102').emit('updating_line', obj)
+                }
+                // socket.broadcast.emit('updating_line', line)
+            // }
         })
 
         // 【事件】客户端断开连接

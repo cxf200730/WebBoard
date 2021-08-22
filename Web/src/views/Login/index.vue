@@ -30,7 +30,7 @@ export default {
     return {
       // 表单信息
       formData: {
-        phone: '18172642994',
+        phone: '20210101',
         password:'123456'
       },
 
@@ -48,11 +48,13 @@ export default {
       let url = ""
       let type = ""
       if(str === "teacher") {
-        url = 'http://192.168.51.104:3000/teacher/login'
+        url = 'http://192.168.51.109:3000/teacher/login'
         type = "teacher"
+        localStorage.setItem('type', type)
       }else{
-        url = 'http://192.168.51.104:3000/student/login'
+        url = 'http://192.168.51.109:3000/student/login'
         type = "student"
+        localStorage.setItem('type', type)
       }
       this.$refs.loginForm.validate(async flag => {
         if (!flag) return
@@ -71,8 +73,8 @@ export default {
                 localStorage.setItem('teacherphone', that.formData.phone)
                 that.$router.push('teacher')
               }else{
-                localStorage.setItem('studentcode', that.formData.phone)
-                that.$router.push('student')
+                localStorage.setItem('teacherphone', that.formData.phone)
+                that.$router.push('home2')
               }
             }else{
               alert("密码错误！")

@@ -12,7 +12,11 @@ class studentModel {
 		return db.query( sql, [])
 	}
 
-	
+	//加入班级
+	Join(body){
+		const sql = "select * from classInfo where classcode = '" + body.classcode + "' and studentcode = '" + body.studentcode + "'"
+		return db.query( sql, [])
+	}
 
 }
 

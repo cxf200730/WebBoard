@@ -5,7 +5,7 @@
       <ul class="participants">
         <li v-for="item in teacherphones" :key="item">
           <span>{{ item }} {{ item === teacherphone ? '（我）' : '' }}</span>
-          <el-tag v-if="item === holder" size="mini">老师</el-tag>
+          <!-- <el-tag v-if="item === holder" size="mini">老师</el-tag> -->
         </li>
       </ul>
     </div>
@@ -34,6 +34,7 @@
         size="small"
         icon="el-icon-magic-stick"
         @click="answerGameHandler"
+        style="margin-top:20px"
       >回答问题</el-button>
 
       <el-button
@@ -41,10 +42,11 @@
         size="small"
         icon="el-icon-switch-button"
         @click="exitHandler"
+        style="margin-top:5px;margin-left:0"
       >退出课堂</el-button>
     </div>
 
-    <!-- 弹出框：老师设置答案 -->
+    <!-- 弹出框：主持人设置答案 -->
     <el-dialog
       title="请设置答案"
       :visible.sync="resultDialogVisible"
@@ -124,7 +126,7 @@ export default {
         this.$message.error('答案不能为空哦!')
         return
       }
-      // 2. 发送开始上课的申请
+      // 2. 发送开始游戏的申请
       this.$store.dispatch('sendStartGame', this.expectImageName)
 
       // 3. 关闭弹框

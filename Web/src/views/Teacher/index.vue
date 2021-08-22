@@ -8,7 +8,7 @@
     <!-- 布局：主体 -->
     <el-container>
       <!-- 左边 -->
-      <el-aside width="200px" class="left-panel">
+      <el-aside width="230px" class="left-panel">
         <app-side-panel />
         <div>
           <div v-for = "(item,index) in messages" :key = "index">
@@ -54,10 +54,16 @@ export default {
   },
   methods: {
     sendMessage(){
-     
-      this.$store.dispatch('sendMessage', this.teacherphone  + " : "+ this.message).then((result) => {
+      if(this.message === "" || this.message.length == 0){
+       return
+     }
+     const message = {
+       teacherphone:localStorage.getItem('teacherphone'),
+       msg:this.message
+     }
+      this.$store.dispatch('sendMessage', message).then((result) => {
         console.log(result)
-        this.messages.push(result)
+        // this.messages.push(result)
         this.message = ""
       }).catch((err) => {
         
@@ -72,8 +78,8 @@ export default {
 .left-panel {
   padding: 20px;
 }
-.el-main{
-  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
-  border: #EBEEF5 solid 1px;
-}
+// .el-main{
+//   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+//   border: #EBEEF5 solid 1px;
+// }
 </style>

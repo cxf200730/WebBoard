@@ -12,7 +12,8 @@ socket.on('connect', () => {
 socket.on('room_info', ({ teacherphones, holder, lines }) => {
   store.commit('updateteacherphones', teacherphones)
   store.commit('updateHolder', holder)
-  store.commit('updateLines', lines)
+  // store.commit('updateLines', lines)
+  store.commit('updateLines', [])
 })
    
 // 别人进入房间, 监听user_enter事件, 获取进入房间的用户信息
@@ -56,12 +57,12 @@ socket.on('game_stoped', () => {
 
 // 监听新线的绘制
 socket.on('starting_line', newLine => {
-  store.commit('drawNewLine', newLine)
+  store.commit('studentdrawNewLine', newLine)
 })
 
 // 监听线的更新
 socket.on('updating_line', lastLine => {
-  store.commit('updateNewLine', lastLine)
+  store.commit('studentupdateNewLine', lastLine)
 })
 
 socket.on('game_answered', ({ alreadyDone, success, teacherphone, answer }) => {

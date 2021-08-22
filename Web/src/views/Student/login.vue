@@ -26,7 +26,7 @@ export default {
     return {
       // 表单信息
       formData: {
-        classcode: '18172642994',
+        classcode: '1101',
       },
 
       // 校验规则
@@ -38,26 +38,23 @@ export default {
 
   methods: {
     login() {
+      const that= this
       this.$refs.loginForm.validate(async flag => {
         if (!flag) return
-        that.axios.post('',null,{
+        that.axios.post('http://192.168.51.104:3000/student/join',null,{
             params:{
                 // params就是query参
-                phone:that.formData.classcode,
+                classcode:that.formData.classcode,
+                studentcode:localStorage.getItem('teacherphone')
             }
         }).then( (res) => {
             console.log(res.data.message)
             if(res.data.message.length != 0){
-              alert("登陆成功")
-              if(type === "teacher"){
-                localStorage.setItem('teacherphone', that.formData.phone)
-                that.$router.push('teacher')
-              }else{
-                localStorage.setItem('studentcode', that.formData.phone)
-                that.$router.push('student')
-              }
+              alert("加入教室成功")
+                localStorage.setItem('classcode', that.formData.classcode)
+                that.$router.push('studentclassroom')
             }else{
-              alert("密码错误！")
+              alert("教室号错误！")
             }
           })
       })
