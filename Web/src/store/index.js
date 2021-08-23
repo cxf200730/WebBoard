@@ -49,7 +49,6 @@ const mutations = {
   },
   studentdrawNewLine(state, obj) {
     let newLine = obj.line
-    // console.log(obj.line);
     let teacherphone = obj.teacherphone
     if(teacherphone === "20210101"){
       newLine.points[0] *= state.getXb
@@ -57,12 +56,12 @@ const mutations = {
     }else if(teacherphone === "20210102"){
       newLine.points[0] *= state.getXb
       state.lines2.push(newLine)
+    }else if(teacherphone === "1"){
+      newLine.points[0] *= state.getXb
+      state.lines.push(newLine)
     }
-    //console.log("初始画板大小"+state.getXb);
-    // newLine.points[0] *= state.getXb
-    // state.lines[index].push(newLine)
-    //newLine.points[0] /= state.getXb
   },
+ 
   studentupdateNewLine(state, obj) {
     let lastLine = obj.line
     let teacherphone = obj.teacherphone
@@ -78,52 +77,84 @@ const mutations = {
       var y = lastLine.points[lastLine.points.length-1]
       x = x * state.getXb
       line.points = line.points.concat([x,y])
+    }else if(teacherphone === "1"){
+      const line = state.lines[state.lines.length - 1]
+      var x = lastLine.points[lastLine.points.length-2]
+      var y = lastLine.points[lastLine.points.length-1]
+      x = x * state.getXb
+      line.points = line.points.concat([x,y])
     }
-    // const line = state.lines[state.lines.length - 1]
-    // var x = lastLine.points[lastLine.points.length-2]
-    // var y = lastLine.points[lastLine.points.length-1]
-    // x = x * state.getXb
-    // line.points = line.points.concat([x,y])
+  },
+  teacherNewLine(state, newLine) {
+      newLine.points[0] *= state.getXb
+      state.lines.push(newLine)
+  },
+  teacherNewLine2(state, newLine) {
+      newLine.points[0] *= state.getXb
+      state.lines.push(newLine)
+  },
+  teacherupdateLine(state, lastLine) {
+      const line = state.lines[state.lines.length - 1]
+      var x = lastLine.points[lastLine.points.length-2]
+      var y = lastLine.points[lastLine.points.length-1]
+      x = x * state.getXb
+      line.points = line.points.concat([x,y])
+  },
+  teacherupdateLine2(state, lastLine) {
+      const line = state.lines[state.lines.length - 1]
+      var x = lastLine.points[lastLine.points.length-2]
+      var y = lastLine.points[lastLine.points.length-1]
+      x = x * state.getXb
+      line.points = line.points.concat([x,y])
   },
   drawNewLine(state, newLine) {
-    
-    //console.log("初始画板大小"+state.getXb);
     newLine.points[0] *= state.getXb
     state.lines.push(newLine)
-    //newLine.points[0] /= state.getXb
+  },
+  teacherdrawNewLine(state, newLine) {
+    newLine.points[0] *= state.getXb
+    state.lines1.push(newLine)
+  },
+  teacherdrawNewLine2(state, newLine) {
+    newLine.points[0] *= state.getXb
+    state.lines2.push(newLine)
+  },
+  teacherupdateNewLine1(state, lastLine) {
+    const line = state.lines1[state.lines1.length - 1]
+    lastLine.points[lastLine.points.length-2] *= state.getXb
+    var y = lastLine.points[lastLine.points.length-1]
+    line.points = lastLine.points
+  },
+  teacherupdateNewLine2(state, lastLine) {
+    const line = state.lines2[state.lines2.length - 1]
+    lastLine.points[lastLine.points.length-2] *= state.getXb
+    var y = lastLine.points[lastLine.points.length-1]
+    line.points = lastLine.points
   },
   updateNewLine1(state, lastLine) {
     const line = state.lines[state.lines.length - 1]
     lastLine.points[lastLine.points.length-2] *= state.getXb
     var y = lastLine.points[lastLine.points.length-1]
-    //console.log("这是变u的线"+line.points.length);
     line.points = lastLine.points
-    //console.log("这是变wanhou的线"+line.points.length);
+  },
+  teacherupdateNewLine(state, lastLine) {
+    
+    const line = state.lines1[state.lines1.length - 1]
+    var x = lastLine.points[lastLine.points.length-2]
+    var y = lastLine.points[lastLine.points.length-1]
+    x = x * state.getXb
+    line.points = line.points.concat([x,y]) 
   },
   updateNewLine(state, lastLine) {
     
     const line = state.lines[state.lines.length - 1]
     var x = lastLine.points[lastLine.points.length-2]
     var y = lastLine.points[lastLine.points.length-1]
-    //console.log("这是本画板的宽"+state.getXb + " ,变换前" +x + "..." + lastLine.points[lastLine.points.length-2]);
-    x = x * state.getXb
-    //console.log("+++"+line.points[line.points.length-1]);
-    //tempLine.points[tempLine.points.length-2] *= state.getXb
-    //console.log("这是本画板的宽"+state.getXb + " ,变换后" +x + "..." + lastLine.points[lastLine.points.length-2]);
-    //console.log("这是变u的线"+line.points.length);
+     x = x * state.getXb
     line.points = line.points.concat([x,y]) 
-    //console.log("这是变wanhou的线"+line.points.length);
-  },
+   },
 
 
-  // updateNewLine2(state, lastLine) {
-  //   const line = state.lines[state.lines.length - 1]
-  //   var x = lastLine.points[lastLine.points.length-2]
-  //   var y = lastLine.points[lastLine.points.length-1]    
-  //   x = x * state.getXb   
-  //   line.points = line.points.concat([x,y])
-    
-  // },
   delFromteacherphones(state, teacherphone) {
     state.teacherphones = state.teacherphones.filter(item => item !== teacherphone)
   }
@@ -132,10 +163,8 @@ const mutations = {
 const actions = {
   // 测试
   sendMessage(context, message) {
-    // console.log(message);
     return new Promise((resolve, reject) => {
       socket.emit('sendMessage', message, res => {
-        // console.log(res)
         resolve(res)
       })
     })
@@ -169,7 +198,6 @@ const actions = {
   sendStopGame(context) {
     socket.emit('stop_game')
   },
-  // 画新线
   sendDrawNewLine(context, newLine) {
     // alert(1);
     // alert(newLine.points[0]);
@@ -180,6 +208,37 @@ const actions = {
     }
 
     socket.emit('new_line', obj)
+  },
+  // 画新线
+  teachersendDrawNewLine(context, newLine) {
+    const obj = {
+      line:newLine,
+      teacherphone:localStorage.getItem('teacherphone')
+    }
+    socket.emit('new_line', obj)
+  },
+  teachersendDrawNewLine2(context, newLine) {
+    const obj = {
+      line:newLine,
+      teacherphone:localStorage.getItem('teacherphone')
+    }
+    socket.emit('new_line2', obj)
+  },
+  // 更新线条
+  teachersendUpdateNewLine(context, lastLine) {
+    const obj = {
+      line:lastLine,
+      teacherphone:localStorage.getItem('teacherphone')
+    }
+    socket.emit('update_line', obj)
+  },
+  // 更新线条
+  teachersendUpdateNewLine2(context, lastLine) {
+    const obj = {
+      line:lastLine,
+      teacherphone:localStorage.getItem('teacherphone')
+    }
+    socket.emit('update_line2', obj)
   },
   // 更新线条
   sendUpdateNewLine(context, lastLine) {

@@ -59,12 +59,28 @@ socket.on('game_stoped', () => {
 socket.on('starting_line', newLine => {
   store.commit('studentdrawNewLine', newLine)
 })
-
+// 监听新线的绘制
+socket.on('studentstarting_line', newLine => {
+  store.commit('teacherNewLine', newLine.line)
+})
+// 监听新线的绘制
+socket.on('studentstarting_line2', newLine => {
+  store.commit('teacherNewLine2', newLine.line)
+})
 // 监听线的更新
 socket.on('updating_line', lastLine => {
   store.commit('studentupdateNewLine', lastLine)
 })
-
+// 监听线的更新
+socket.on('studentupdating_line', lastLine => {
+  // console.log(lastLine.line);
+  store.commit('teacherupdateLine', lastLine.line)
+})
+// 监听线的更新
+socket.on('studentupdating_line2', lastLine => {
+  // console.log(lastLine.line);
+  store.commit('teacherupdateLine2', lastLine.line)
+})
 socket.on('game_answered', ({ alreadyDone, success, teacherphone, answer }) => {
   if (alreadyDone) {
     MessageBox.alert('当前问题已经被回答，您不能继续回答了！')

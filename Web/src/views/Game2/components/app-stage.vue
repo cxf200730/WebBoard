@@ -94,6 +94,7 @@ export default {
 
     // 笔按下
     touchstartHandler(e) {
+      // alert(2)
       // if (!this.isGameHolder || !this.isGameHolder) return
       this.painting = true
       let newX = e.evt.changedTouches[0].clientX-$('#card').offset().left

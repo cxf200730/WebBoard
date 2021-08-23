@@ -163,22 +163,36 @@ module.exports = httpServer => {
         socket.on('new_line', (obj) => {
             let line = obj.line
             let teacherphone = obj.teacherphone
-            // if (currentGame&& currentGame.lines) {
-                // currentGame.lines.push(line)
-
                 if(teacherphone === "20210101"){
                     socket.broadcast.to('20210101').emit('starting_line', obj)
                 }else if(teacherphone === "20210102"){
                     socket.broadcast.to('20210102').emit('starting_line', obj)
                 }else if(teacherphone === "1"){
-                    socket.broadcast.to('20210101').emit('starting_line', obj)
-                    socket.broadcast.to('20210102').emit('starting_line', obj)
+                    socket.broadcast.to('20210101').emit('studentstarting_line', obj)
+                    // socket.broadcast.to('20210102').emit('studentstarting_line', obj)
                 }
 
                 // socket.broadcast.emit('starting_line', line)
             // }
         })
+        socket.on('new_line2', (obj) => {
+            let line = obj.line
+            let teacherphone = obj.teacherphone
+                if(teacherphone === "20210101"){
+                    socket.broadcast.to('20210101').emit('starting_line', obj)
+                }else if(teacherphone === "20210102"){
+                    socket.broadcast.to('20210102').emit('starting_line', obj)
+                }else if(teacherphone === "1"){
+                    // console.log(1);
+                    // console.log(obj);
+                    // socket.broadcast.to('20210102').emit('user_send', "123")
+                    // socket.broadcast.to('20210101').emit('studentstarting_line', obj)
+                    socket.broadcast.to('20210102').emit('studentstarting_line2', obj)
+                }
 
+                // socket.broadcast.emit('starting_line', line)
+            // }
+        })
         socket.on('update_line', (obj) => {
             let line = obj.line
             let teacherphone = obj.teacherphone
@@ -190,13 +204,29 @@ module.exports = httpServer => {
                 }else if(teacherphone === "20210102"){
                     socket.broadcast.to('20210102').emit('updating_line', obj)
                 }else if(teacherphone === "1"){
-                    socket.broadcast.to('20210101').emit('updating_line', obj)
-                    socket.broadcast.to('20210102').emit('updating_line', obj)
+                    socket.broadcast.to('20210101').emit('studentupdating_line2', obj)
+                    // socket.broadcast.to('20210102').emit('studentupdating_line', obj)
                 }
                 // socket.broadcast.emit('updating_line', line)
             // }
         })
+        socket.on('update_line2', (obj) => {
+            let line = obj.line
+            let teacherphone = obj.teacherphone
+            // if (currentGame&& currentGame.lines) {
+                // currentGame.lines[currentGame.lines.length - 1] = line
 
+                if(teacherphone === "20210101"){
+                    socket.broadcast.to('20210101').emit('updating_line', obj)
+                }else if(teacherphone === "20210102"){
+                    socket.broadcast.to('20210102').emit('updating_line', obj)
+                }else if(teacherphone === "1"){
+                    // socket.broadcast.to('20210101').emit('studentupdating_line', obj)
+                    socket.broadcast.to('20210102').emit('studentupdating_line', obj)
+                }
+                // socket.broadcast.emit('updating_line', line)
+            // }
+        })
         // 【事件】客户端断开连接
         // ------------------------------------------------------------
         socket.on('disconnect', () => {
