@@ -33,7 +33,6 @@ export default {
     this.getXb =  document.getElementById('card').clientWidth
     this.stageConfig.width = this.$refs.wrapper.$el.offsetWidth
     this.$store.commit('initXb', this.getXb)
-    const that = this
     window.addEventListener('touchmove', function(){}, { passive: false })
   },
 
@@ -49,7 +48,7 @@ export default {
       // 绘画状态
       painting: false,
       stroke: '#000000',
-      strokeWidth: 1,
+      strokeWidth: 1.7,
       getXb:1,
     }
   },

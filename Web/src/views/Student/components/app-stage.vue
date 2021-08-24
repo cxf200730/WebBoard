@@ -20,29 +20,26 @@
     </div>
   
     <el-card ref="wrapper" :body-style="{ padding: 0 }" id="card">
-    <!-- <img src="../../../../public/1.png" /> -->
-      <v-stage
-        id="stage"
-        :config="stageConfig"
-        @mousedown="mousedownHandler"
-        @mouseup="mouseupHandler"
-        @mousemove="mousemoveHandler"
-        @touchstart="touchstartHandler"
-        @touchmove="touchmoveHandler"
-        @touchend="touchendHandler"
-      >
-        <v-layer>
-          <v-image
+    <v-stage
+      id="stage"
+      :config="stageConfig"
+      @touchstart="touchstartHandler"
+      @touchmove="touchmoveHandler"
+      @touchend="touchendHandler"
+    >
+      <v-layer>
+        <v-image
             :config="imgConfig">
           </v-image>
-          <v-line
-            v-for="(line, index) in lines"
-            :key="index"
-            :config="line"
-          />
-        </v-layer>
-      </v-stage>
-    </el-card>
+        <v-line
+          v-for="(line, index) in lines"
+          :key="index"
+          :config="line"
+        />
+        
+      </v-layer>
+    </v-stage>
+  </el-card>
   </div>
 
   <div style="margin:0 auto;margin-top:50px">
@@ -68,20 +65,26 @@ export default {
   mounted(){
     // this.stageConfig.width = this.$refs.wrapper.$el.offsetWidth
     window.addEventListener('touchmove', function(){}, { passive: false })
-   
-    
+    this.getXb =  document.getElementById('card').clientWidth
+    this.getYb =  document.getElementById('card').clientHeight
+    this.stageConfig.width = this.$refs.wrapper.$el.offsetWidth
+    this.stageConfig.height = this.$refs.wrapper.$el.offsetHeight
+    this.$store.commit('initXb', this.getXb)
+    this.$store.commit('initYb', this.getYb)
 
     },
   data() {
     return {
+      getXb:1,
+      getYb:1,
         // 画布配置
         stageConfig: {
-            width: 580,
-            height: 575
+            width: 560,
+            height: 450
         },
         imgConfig:{
           image:"",
-          width:580
+          width: 560
         },
         // 绘画状态
         painting: false,
@@ -107,6 +110,8 @@ export default {
       
       const that = this
       this.stageConfig.width = this.$refs.wrapper.$el.offsetWidth
+      this.stageConfig.height = this.$refs.wrapper.$el.offsetHeight
+      // console.log(this.$refs.wrapper.$el.offsetWidth);
       const image = new window.Image();
         image.src = this.imgList[index-1];
         image.onload = () => {
@@ -117,74 +122,43 @@ export default {
     },
     remove(){
       localStorage.removeItem('studentcode');
+      localStorage.removeItem('classcode');
       localStorage.removeItem('teacherphone')
       this.$router.push('login')
     },
-    // 鼠标按下
-    mousedownHandler(e) {
-      // if (!this.isGameHolder || !this.isGameHolder) return
-
-      this.painting = true
-      // 创建一个新线条
-      const newLine = {
-        stroke: this.stroke,
-        strokeWidth: this.strokeWidth,
-        points: [e.evt.layerX, e.evt.layerY]
-      }
-      // 本地画线, 存到vuex中
-      this.$store.commit('drawNewLine', newLine)
-      // 请求服务器
-      this.$store.dispatch('sendDrawNewLine', newLine)
-      
-    },
-
-    // 鼠标拖动
-    mousemoveHandler(e) {
-      if (!this.painting) return
-      const lastLine = this.lines[this.lines.length - 1]
-      lastLine.points = lastLine.points.concat([e.evt.layerX, e.evt.layerY])
-      console.log(lastLine)
-      this.$store.commit('updateNewLine', lastLine)
-      // 请求服务器
-      this.$store.dispatch('sendUpdateNewLine', lastLine)
-    },
-    // 鼠标释放
-    mouseupHandler() {
-      this.painting = false
-    },
+    
     // 笔按下
     touchstartHandler(e) {
+      // alert(2)
       // if (!this.isGameHolder || !this.isGameHolder) return
       this.painting = true
+      let newX = e.evt.changedTouches[0].clientX-$('#card').offset().left
+      let newY = e.evt.changedTouches[0].clientY-$('#card').offset().top+ $(document).scrollTop()
       // 创建一个新线条
       const newLine = {
         stroke: this.stroke,
         strokeWidth: this.strokeWidth,
-        points: [e.evt.changedTouches[0].clientX-$('#card').offset().left, e.evt.changedTouches[0].clientY-$('#card').offset().top+ $(document).scrollTop()]
+        points: [newX / this.getXb , newY / this.getYb]
       }
+      // console.log(newLine);
+      // 请求服务器
+      this.$store.dispatch('sendDrawNewLine', newLine)
       // 本地画线, 存到vuex中
       this.$store.commit('drawNewLine', newLine)
-      // this.$store.commit('addNewLines', newLine,this.pictureIndex)
-      
-      // 请求服务器
-      // this.$store.dispatch('sendDrawNewLine', newLine)
      },
-  
+
     // 笔拖动
     touchmoveHandler(e) {
-      // e = window.event || e;
-      // console.log(e.screenX + " " + e.screenY);
-    
       if (!this.painting) return
+      this.nowX = document.getElementById('card').clientWidth
       const lastLine = this.lines[this.lines.length - 1]
-    //   console.log($('#card').offset());
+      let newX = e.evt.changedTouches[0].clientX-$('#card').offset().left
+      let newY = e.evt.changedTouches[0].clientY-$('#card').offset().top+ $(document).scrollTop()
+      lastLine.points = lastLine.points.concat([newX / this.getXb , newY / this.getYb])
 
-      lastLine.points = lastLine.points.concat([e.evt.changedTouches[0].clientX-$('#card').offset().left, e.evt.changedTouches[0].clientY-$('#card').offset().top + $(document).scrollTop()])
-      console.log(lastLine)
-      this.$store.commit('updateNewLine', lastLine)
-      // this.$store.commit('updateNewLines', lastLine,this.pictureIndex)
       // 请求服务器
-      // this.$store.dispatch('sendUpdateNewLine', lastLine)
+      this.$store.dispatch('sendUpdateNewLine', lastLine)
+      this.$store.commit('updateNewLine1', lastLine)
     },
 
     // 笔释放
@@ -199,9 +173,9 @@ export default {
 <style lang="less" scoped>
 .el-card{
   touch-action: none;
-  width: 580px;
-  height:575px;
-  overflow: auto; 
+  height: 560px;
+  width: 560px;
+  overflow: hidden;
 }
 
 .info{

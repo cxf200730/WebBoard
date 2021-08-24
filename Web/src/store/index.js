@@ -14,11 +14,15 @@ const state = {
   lines2: [] ,// 房间的绘图信息 (画了多少根线)
   messages:[],
   getXb:1,
+  getYb:1,
 }
 
 const mutations = {
   initXb(state, getXb){
     state.getXb = getXb
+  },
+  initYb(state, getYb){
+    state.getYb = getYb
   },
   updateConnected(state, connected) {
     state.connected = connected
@@ -48,16 +52,21 @@ const mutations = {
     }
   },
   studentdrawNewLine(state, obj) {
+    console.log(1);
     let newLine = obj.line
     let teacherphone = obj.teacherphone
     if(teacherphone === "20210101"){
+      
       newLine.points[0] *= state.getXb
+      newLine.points[1] *= state.getYb
       state.lines1.push(newLine)
     }else if(teacherphone === "20210102"){
       newLine.points[0] *= state.getXb
+      newLine.points[1] *= state.getYb
       state.lines2.push(newLine)
     }else if(teacherphone === "1"){
       newLine.points[0] *= state.getXb
+      newLine.points[1] *= state.getYb
       state.lines.push(newLine)
     }
   },
@@ -70,27 +79,32 @@ const mutations = {
       var x = lastLine.points[lastLine.points.length-2]
       var y = lastLine.points[lastLine.points.length-1]
       x = x * state.getXb
+      y = y * state.getYb
       line.points = line.points.concat([x,y])
     }else if(teacherphone === "20210102"){
       const line = state.lines2[state.lines2.length - 1]
       var x = lastLine.points[lastLine.points.length-2]
       var y = lastLine.points[lastLine.points.length-1]
       x = x * state.getXb
+      y = y * state.getYb
       line.points = line.points.concat([x,y])
     }else if(teacherphone === "1"){
       const line = state.lines[state.lines.length - 1]
       var x = lastLine.points[lastLine.points.length-2]
       var y = lastLine.points[lastLine.points.length-1]
       x = x * state.getXb
+      y = y * state.getYb
       line.points = line.points.concat([x,y])
     }
   },
   teacherNewLine(state, newLine) {
       newLine.points[0] *= state.getXb
+      newLine.points[1] *= state.getYb
       state.lines.push(newLine)
   },
   teacherNewLine2(state, newLine) {
       newLine.points[0] *= state.getXb
+      newLine.points[1] *= state.getYb
       state.lines.push(newLine)
   },
   teacherupdateLine(state, lastLine) {
@@ -98,6 +112,7 @@ const mutations = {
       var x = lastLine.points[lastLine.points.length-2]
       var y = lastLine.points[lastLine.points.length-1]
       x = x * state.getXb
+      y = y * state.getYb
       line.points = line.points.concat([x,y])
   },
   teacherupdateLine2(state, lastLine) {
@@ -105,35 +120,42 @@ const mutations = {
       var x = lastLine.points[lastLine.points.length-2]
       var y = lastLine.points[lastLine.points.length-1]
       x = x * state.getXb
+      y = y * state.getYb
       line.points = line.points.concat([x,y])
   },
   drawNewLine(state, newLine) {
     newLine.points[0] *= state.getXb
+    newLine.points[1] *= state.getYb
     state.lines.push(newLine)
   },
   teacherdrawNewLine(state, newLine) {
     newLine.points[0] *= state.getXb
+    newLine.points[1] *= state.getYb
     state.lines1.push(newLine)
   },
   teacherdrawNewLine2(state, newLine) {
     newLine.points[0] *= state.getXb
+    newLine.points[1] *= state.getYb
     state.lines2.push(newLine)
   },
   teacherupdateNewLine1(state, lastLine) {
     const line = state.lines1[state.lines1.length - 1]
     lastLine.points[lastLine.points.length-2] *= state.getXb
+    lastLine.points[lastLine.points.length-1] *= state.getYb
     var y = lastLine.points[lastLine.points.length-1]
     line.points = lastLine.points
   },
   teacherupdateNewLine2(state, lastLine) {
     const line = state.lines2[state.lines2.length - 1]
     lastLine.points[lastLine.points.length-2] *= state.getXb
+    lastLine.points[lastLine.points.length-1] *= state.getYb
     var y = lastLine.points[lastLine.points.length-1]
     line.points = lastLine.points
   },
   updateNewLine1(state, lastLine) {
     const line = state.lines[state.lines.length - 1]
     lastLine.points[lastLine.points.length-2] *= state.getXb
+    lastLine.points[lastLine.points.length-1] *= state.getYb
     var y = lastLine.points[lastLine.points.length-1]
     line.points = lastLine.points
   },
@@ -143,6 +165,7 @@ const mutations = {
     var x = lastLine.points[lastLine.points.length-2]
     var y = lastLine.points[lastLine.points.length-1]
     x = x * state.getXb
+    y = y * state.getYb
     line.points = line.points.concat([x,y]) 
   },
   updateNewLine(state, lastLine) {
@@ -151,6 +174,7 @@ const mutations = {
     var x = lastLine.points[lastLine.points.length-2]
     var y = lastLine.points[lastLine.points.length-1]
      x = x * state.getXb
+     y = y * state.getYb
     line.points = line.points.concat([x,y]) 
    },
 

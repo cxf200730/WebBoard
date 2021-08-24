@@ -74,7 +74,9 @@ export default {
                 that.$router.push('teacher')
               }else{
                 localStorage.setItem('teacherphone', that.formData.phone)
-                that.$router.push('home2')
+                localStorage.setItem('studentcode', that.formData.phone)
+                localStorage.setItem('classcode', "1101")
+                that.$router.push('studentclassroom')
               }
             }else{
               alert("密码错误！")
