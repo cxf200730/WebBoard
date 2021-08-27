@@ -9,12 +9,15 @@ import VueKonva from 'vue-konva'
 import axios from 'axios'
 import $ from "jquery"
 import {saveAs} from 'file-saver'
-
+import VueTouch from 'vue-touch'
 Vue.config.productionTip = false
 Vue.prototype.axios = axios
 Vue.prototype.$ = $
 Vue.use(ElementUI)
 Vue.use(VueKonva)
+
+
+Vue.use(VueTouch, {name: 'v-touch'})
 new Vue({
   router,
   store,

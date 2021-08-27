@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container class="bg">
     <!-- 布局：头部 -->
     <el-header height="30">
       <app-header />
@@ -18,7 +18,7 @@
             <div v-for = "(item,index) in messages" :key = "index">
               {{item}}
             </div>
-            
+           
           </div>
           <div class="input">
             <el-input v-model = "message" @keyup.enter.native = "sendMessage" style="margin-right:10px"></el-input>
@@ -53,28 +53,46 @@ export default {
     this.$store.dispatch('sendUserEnter')
   },
   mounted(){
-    // document.body.addEventListener("touchmove", this.defferScroll, {passive: false});
-    // document.body.addEventListener("wheel", this.defferScroll, {passive: false});
+    // document.body.addEventListener("touchmove", ()=>{}, {passive: false});
+    // document.body.addEventListener("wheel", ()=>{}, {passive: false});
+    window.onload = function() { // 阻止双击放大 
+      var lastTouchEnd = 0;
+      document.addEventListener('touchstart', function(event) {
+      if (event.touches.length > 1) { 
+      event.preventDefault(); 
+      } });
+      document.addEventListener('touchend', function(event) { 
+      var now = (new Date()).getTime(); if (now - lastTouchEnd <= 300) {
+      event.preventDefault(); 
+      } lastTouchEnd = now;
+      }, false); 
+      // 阻止双指放大 
+      document.addEventListener('gesturestart', function(event) { event.preventDefault(); }); }
+
+      document.body.addEventListener('touchmove', function (e) {
+      e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
+      }, {passive: false});
+    
     // 禁用双击放大
-    var lastTouchEnd = 0;
-    document.documentElement.addEventListener('touchend', function (event) {
-      var now = Date.now();
-      if (now - lastTouchEnd <= 300) {
-          event.preventDefault();
-      }
-      lastTouchEnd = now;
-    },{
-      passive: false
-    });
+    // var lastTouchEnd = 0;
+    // document.documentElement.addEventListener('touchend', function (event) {
+    //   var now = Date.now();
+    //   if (now - lastTouchEnd <= 300) {
+    //       event.preventDefault();
+    //   }
+    //   lastTouchEnd = now;
+    // },{
+    //   passive: false
+    // });
 
     // 禁用双指放大
-    document.documentElement.addEventListener('touchstart', function (event) {
-      if (event.touches.length > 1) {
-          event.preventDefault();
-      }
-    },{
-      passive: false
-    });
+    // document.documentElement.addEventListener('touchstart', function (event) {
+    //   if (event.touches.length > 1) {
+    //       event.preventDefault();
+    //   }
+    // },{
+    //   passive: false
+    // });
 
  },
   computed: {
@@ -112,12 +130,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.el-container{
+.bg{
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 94%;
-  max-height: 94%;
+  // min-height: 97%;
+  // max-height: 97%;
+  // background-color: aqua;
+  // overflow: hidden;
+  // max-height: 95%;
   // background-color: aqua;
 }
 .left-panel {
@@ -125,7 +146,7 @@ export default {
 }
 .left-buttom{
   // background-color: aqua;
-  height: 64%;
+  height: 65%;
   width: 100%;
   padding-top: 10px;
   .video{
@@ -157,5 +178,13 @@ export default {
     display: flex;
     margin: 0 auto;
   }
+}
+
+.el-main{
+  // background-color: aqua;
+  // padding: 10px;
+  margin: 0;
+  padding-top: 0;
+  // overflow: auto;
 }
 </style>

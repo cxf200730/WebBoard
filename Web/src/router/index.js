@@ -8,10 +8,12 @@ const routes = [
   { path: '/login', component: () => import('@/views/Login/index') },
   { path: '/home', component: () => import('@/views/Game/index') },
   { path: '/test', component: () => import('@/views/test') },
+  { path: '/test2', component: () => import('@/views/test2') },
   { path: '/home2', component: () => import('@/views/Game2/index') },
-  { path: '/teacher', component: () => import('@/views/Teacher/index') },
+  { path: '/teacher', component: () => import('@/views/Teacher/test2') },
   { path: '/student', component: () => import('@/views/Student/login') },
-  { path: '/studentclassroom', component: () => import('@/views/Student/index') }
+  { path: '/studentclassroom', component: () => import('@/views/Student/index') },
+  { path: '/write', component: () => import('@/views/Student2/index') }
   
 ]
 

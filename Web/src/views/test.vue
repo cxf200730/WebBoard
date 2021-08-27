@@ -18,7 +18,7 @@
                                 >
                                 <v-layer>
                                     <v-line
-                                    v-for="(line, index) in lines1"
+                                    v-for="(line, index) in lines2"
                                     :key="index"
                                     :config="line"
                                     />
@@ -65,8 +65,11 @@
 <script>
 import { mapGetters, mapState } from 'vuex'
 export default {
+     created() {
+    this.$store.dispatch('sendUserEnter')
+  },
 computed: {
-    ...mapState(['lines1','lines2']),
+    ...mapState(['teacherLines','lines2']),
     ...mapGetters(['isGameStarted', 'isGameHolder']),
 },
 mounted(){

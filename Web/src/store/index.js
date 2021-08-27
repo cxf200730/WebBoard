@@ -10,11 +10,11 @@ const state = {
   teacherphones: [], // 房间用户昵称列表
   holder: '', // 游戏主持人
   lines:[],
-  lines1: [] ,// 房间的绘图信息 (画了多少根线)
-  lines2: [] ,// 房间的绘图信息 (画了多少根线)
   messages:[],
   getXb:1,
   getYb:1,
+  teacherLines:[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+  teacherLines2:[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
 }
 
 const mutations = {
@@ -44,6 +44,7 @@ const mutations = {
     state.messages = messages || []
   },
   addTomessages(state, message) {
+    console.log(12);
     state.messages.push(message)
   },
   addToteacherphones(state, teacherphone) {
@@ -52,44 +53,30 @@ const mutations = {
     }
   },
   studentdrawNewLine(state, obj) {
-    console.log(1);
     let newLine = obj.line
     let teacherphone = obj.teacherphone
-    if(teacherphone === "20210101"){
-      
-      newLine.points[0] *= state.getXb
-      newLine.points[1] *= state.getYb
-      state.lines1.push(newLine)
-    }else if(teacherphone === "20210102"){
-      newLine.points[0] *= state.getXb
-      newLine.points[1] *= state.getYb
-      state.lines2.push(newLine)
-    }else if(teacherphone === "1"){
-      newLine.points[0] *= state.getXb
-      newLine.points[1] *= state.getYb
-      state.lines.push(newLine)
-    }
+    let id = obj.id
+    console.log(id - 1);
+    newLine.points[0] *= state.getXb
+    newLine.points[1] *= state.getYb
+    newLine.points[2] *= state.getXb
+    newLine.points[3] *= state.getYb
+    state.teacherLines[id - 1].push(newLine)
   },
  
   studentupdateNewLine(state, obj) {
     let lastLine = obj.line
     let teacherphone = obj.teacherphone
     if(teacherphone === "20210101"){
-      const line = state.lines1[state.lines1.length - 1]
+      const line = state.teacherLines[0][state.teacherLines[0].length - 1]
       var x = lastLine.points[lastLine.points.length-2]
       var y = lastLine.points[lastLine.points.length-1]
       x = x * state.getXb
       y = y * state.getYb
       line.points = line.points.concat([x,y])
     }else if(teacherphone === "20210102"){
-      const line = state.lines2[state.lines2.length - 1]
-      var x = lastLine.points[lastLine.points.length-2]
-      var y = lastLine.points[lastLine.points.length-1]
-      x = x * state.getXb
-      y = y * state.getYb
-      line.points = line.points.concat([x,y])
-    }else if(teacherphone === "1"){
-      const line = state.lines[state.lines.length - 1]
+      console.log(11);
+      const line = state.teacherLines[1][state.teacherLines[1].length - 1]
       var x = lastLine.points[lastLine.points.length-2]
       var y = lastLine.points[lastLine.points.length-1]
       x = x * state.getXb
@@ -98,52 +85,80 @@ const mutations = {
     }
   },
   teacherNewLine(state, newLine) {
-      newLine.points[0] *= state.getXb
-      newLine.points[1] *= state.getYb
-      state.lines.push(newLine)
+    console.log(newLine);
+    const id = newLine.id
+    const newline = newLine.line
+    newline.points[0] *= state.getXb
+    newline.points[1] *= state.getYb
+    // console.log(newline);
+    // state.lines.push(newline)
+    // console.log(id - 1);
+    state.teacherLines[id - 1].push(newline)
   },
   teacherNewLine2(state, newLine) {
       newLine.points[0] *= state.getXb
       newLine.points[1] *= state.getYb
       state.lines.push(newLine)
   },
-  teacherupdateLine(state, lastLine) {
-      const line = state.lines[state.lines.length - 1]
+  teacherupdateLine2(state, obj) {
+    
+    const id = obj.id - 1
+    console.log(id);
+    const lastLine = obj.line
+      const line = state.teacherLines[id][state.teacherLines[id].length - 1]
       var x = lastLine.points[lastLine.points.length-2]
       var y = lastLine.points[lastLine.points.length-1]
       x = x * state.getXb
       y = y * state.getYb
       line.points = line.points.concat([x,y])
   },
-  teacherupdateLine2(state, lastLine) {
-      const line = state.lines[state.lines.length - 1]
-      var x = lastLine.points[lastLine.points.length-2]
-      var y = lastLine.points[lastLine.points.length-1]
-      x = x * state.getXb
-      y = y * state.getYb
-      line.points = line.points.concat([x,y])
+  teaupdateLine(state, obj) {
+    
+    let lastLine = obj.line
+    let teacherphone = obj.teacherphone
+    let id = obj.id
+    // console.log(obj);
+    // console.log(teacherphone);
+    let x = lastLine.points[lastLine.points.length-2]
+    let y = lastLine.points[lastLine.points.length-1]
+    x = x * state.getXb
+    y = y * state.getYb
+    const line = state.teacherLines[id - 1][state.teacherLines[id - 1].length - 1]
+    line.points = line.points.concat([x,y])
+
   },
   drawNewLine(state, newLine) {
     newLine.points[0] *= state.getXb
     newLine.points[1] *= state.getYb
+    newLine.points[2] *= state.getXb
+    newLine.points[3] *= state.getYb
+    // console.log(newLine);
     state.lines.push(newLine)
   },
-  teacherdrawNewLine(state, newLine) {
+  teacherdrawNewLine(state, qq) {
+    const newLine = qq.newLine
+    const temp = qq.a.slice(5,qq.a.length) - 1
     newLine.points[0] *= state.getXb
     newLine.points[1] *= state.getYb
-    state.lines1.push(newLine)
+    console.log(1);
+    state.teacherLines2[temp].push(newLine)
   },
   teacherdrawNewLine2(state, newLine) {
     newLine.points[0] *= state.getXb
     newLine.points[1] *= state.getYb
     state.lines2.push(newLine)
+    state.teacherLines[1].push(newLine)
   },
-  teacherupdateNewLine1(state, lastLine) {
-    const line = state.lines1[state.lines1.length - 1]
+  teacherupdateNewLine1(state, obj) {
+    // console.log(obj);
+    const lastLine =  obj.lastLine
+    let temp = obj.a.slice(5,obj.a.length) - 1
     lastLine.points[lastLine.points.length-2] *= state.getXb
     lastLine.points[lastLine.points.length-1] *= state.getYb
-    var y = lastLine.points[lastLine.points.length-1]
-    line.points = lastLine.points
+
+    const line2 = state.teacherLines2[temp][state.teacherLines2[temp].length - 1]
+    line2.points = lastLine.points 
+        // console.log(state.teacherLines[1][state.teacherLines[1].length - 1].points);
   },
   teacherupdateNewLine2(state, lastLine) {
     const line = state.lines2[state.lines2.length - 1]
@@ -151,6 +166,12 @@ const mutations = {
     lastLine.points[lastLine.points.length-1] *= state.getYb
     var y = lastLine.points[lastLine.points.length-1]
     line.points = lastLine.points
+    const line2 = state.teacherLines[1][state.teacherLines[1].length - 1]
+    // console.log(state.lines2);
+    line2.points = lastLine.points
+    // const line2 = state.teacherLines['lines2'][state.teacherLines['lines2'].length - 1]
+    // line2.points = lastLine.points
+    // console.log(state.teacherLines['lines2']);
   },
   updateNewLine1(state, lastLine) {
     const line = state.lines[state.lines.length - 1]
@@ -223,23 +244,25 @@ const actions = {
     socket.emit('stop_game')
   },
   sendDrawNewLine(context, newLine) {
-    // alert(1);
-    // alert(newLine.points[0]);
-  
     const obj = {
-      line:newLine,
-      teacherphone:localStorage.getItem('teacherphone')
+      line:newLine.newLine,
+      teacherphone:localStorage.getItem('teacherphone'),
+      id: newLine.id
     }
-
-    socket.emit('new_line', obj)
+    // alert(1)
+    // console.log(newLine.id);
+    // console.log(obj);
+    socket.emit('stunew_line', obj)
   },
   // 画新线
   teachersendDrawNewLine(context, newLine) {
     const obj = {
-      line:newLine,
-      teacherphone:localStorage.getItem('teacherphone')
+      line:newLine.newLine,
+      teacherphone:localStorage.getItem('teacherphone'),
+      id:newLine.id
     }
-    socket.emit('new_line', obj)
+    // console.log(newLine.id);
+    socket.emit('teacherNew_line', obj)
   },
   teachersendDrawNewLine2(context, newLine) {
     const obj = {
@@ -251,8 +274,9 @@ const actions = {
   // 更新线条
   teachersendUpdateNewLine(context, lastLine) {
     const obj = {
-      line:lastLine,
-      teacherphone:localStorage.getItem('teacherphone')
+      line:lastLine.lastLine,
+      teacherphone:localStorage.getItem('teacherphone'),
+      id:lastLine.id
     }
     socket.emit('update_line', obj)
   },
@@ -273,6 +297,16 @@ const actions = {
     socket.emit('update_line', obj)
   },
 
+  // 更新线条
+  stuUpdateNewLine(context, lastLine) {
+    const obj = {
+      line:lastLine.lastLine,
+      teacherphone:localStorage.getItem('teacherphone'),
+      id:lastLine.id
+    }
+    // console.log(obj);
+    socket.emit('stuupdate_line', obj)
+  },
   sendAnswerGame(context, inputImageName) {
     socket.emit('answer_game', inputImageName)
   },

@@ -56,12 +56,12 @@ socket.on('game_stoped', () => {
 })
 
 // 监听新线的绘制
-socket.on('starting_line', newLine => {
+socket.on('teastarting_line', newLine => {
   store.commit('studentdrawNewLine', newLine)
 })
 // 监听新线的绘制
 socket.on('studentstarting_line', newLine => {
-  store.commit('teacherNewLine', newLine.line)
+  store.commit('teacherNewLine', newLine)
 })
 // 监听新线的绘制
 socket.on('studentstarting_line2', newLine => {
@@ -74,12 +74,16 @@ socket.on('updating_line', lastLine => {
 // 监听线的更新
 socket.on('studentupdating_line', lastLine => {
   // console.log(lastLine.line);
-  store.commit('teacherupdateLine', lastLine.line)
+  store.commit('teacherupdateLine', lastLine)
+})
+socket.on('stuupdating_line', lastLine => {
+  // console.log(lastLine.line);
+  store.commit('teaupdateLine', lastLine)
 })
 // 监听线的更新
 socket.on('studentupdating_line2', lastLine => {
   // console.log(lastLine.line);
-  store.commit('teacherupdateLine2', lastLine.line)
+  store.commit('teacherupdateLine2', lastLine)
 })
 socket.on('game_answered', ({ alreadyDone, success, teacherphone, answer }) => {
   if (alreadyDone) {

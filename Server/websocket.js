@@ -7,7 +7,7 @@ module.exports = httpServer => {
     const socket2user = {}
 	const message = ""
     let currentGame = null
-
+    let stuList = []
  server.on("text", function (str) {
         //将收到的信息提取key
         var key=str.split(":");
@@ -57,18 +57,18 @@ module.exports = httpServer => {
             // 添加用户信息
             user2socket[teacherphone] = sid
             socket2user[sid] = teacherphone
-            
-            if(teacherphone === "20210101"){
-                socket.join('20210101')
-                // server.sockets.in('20210101').emit('user_send', teacherphone)
-            }else if(teacherphone === "20210102"){
-                socket.join('20210102')
-                // server.sockets.in('20210102').emit('user_send', teacherphone)
-            }else if(teacherphone === "1"){
-                socket.join('20210101')
-                socket.join('20210102')
-                // server.sockets.in('20210101').emit('user_send', teacherphone)
-                // socket.broadcast.to('20210102').emit('user_send', teacherphone)
+            if(teacherphone === "1"){
+                // console.log(stuList);
+                // for (let i = 0; i < stuList.length; i++) {
+                //     socket.join(stuList[i])
+                // }
+                for (let i = 20210101; i < 20210121; i++) {
+                    // console.log(i.toString());
+                    socket.join(i.toString())
+                }
+            }else{
+                socket.join(teacherphone)
+                stuList.push(teacherphone)
             }
 
             // 发送用户列表给当前用户
@@ -160,20 +160,21 @@ module.exports = httpServer => {
 
         // 【事件】用户绘图
         // ------------------------------------------------------------
-        socket.on('new_line', (obj) => {
+        socket.on('stunew_line', (obj) => {
             let line = obj.line
             let teacherphone = obj.teacherphone
-                if(teacherphone === "20210101"){
-                    socket.broadcast.to('20210101').emit('starting_line', obj)
-                }else if(teacherphone === "20210102"){
-                    socket.broadcast.to('20210102').emit('starting_line', obj)
-                }else if(teacherphone === "1"){
-                    socket.broadcast.to('20210101').emit('studentstarting_line', obj)
-                    // socket.broadcast.to('20210102').emit('studentstarting_line', obj)
-                }
-
-                // socket.broadcast.emit('starting_line', line)
-            // }
+            let id = obj.id
+            let stucode = "202101" + id
+            // console.log(stucode);
+            socket.broadcast.to(stucode).emit('teastarting_line', obj)
+        })
+        socket.on('teacherNew_line', (obj) => {
+            let line = obj.line
+            let teacherphone = obj.teacherphone
+            let id = obj.id
+            let stucode = "2021010" + id
+            console.log(stucode);
+            socket.broadcast.to(stucode).emit('studentstarting_line', obj)
         })
         socket.on('new_line2', (obj) => {
             let line = obj.line
@@ -196,26 +197,27 @@ module.exports = httpServer => {
         socket.on('update_line', (obj) => {
             let line = obj.line
             let teacherphone = obj.teacherphone
-            // if (currentGame&& currentGame.lines) {
-                // currentGame.lines[currentGame.lines.length - 1] = line
-
-                if(teacherphone === "20210101"){
-                    socket.broadcast.to('20210101').emit('updating_line', obj)
-                }else if(teacherphone === "20210102"){
-                    socket.broadcast.to('20210102').emit('updating_line', obj)
-                }else if(teacherphone === "1"){
-                    socket.broadcast.to('20210101').emit('studentupdating_line2', obj)
-                    // socket.broadcast.to('20210102').emit('studentupdating_line', obj)
-                }
-                // socket.broadcast.emit('updating_line', line)
-            // }
+            let id = obj.id
+            let stucode = "2021010" + id
+            // console.log(obj);
+            if(stucode === "2021010undefined"){
+                // console.log(teacherphone);
+                socket.broadcast.to(teacherphone).emit('studentupdating_line', obj)
+            }
+            socket.broadcast.to(stucode).emit('studentupdating_line2', obj)
+        })
+        socket.on('stuupdate_line', (obj) => {
+            let line = obj.line
+            let teacherphone = obj.teacherphone
+            id = obj.id
+            let stucode = "202101" + id
+            socket.broadcast.to(stucode).emit('stuupdating_line', obj)
         })
         socket.on('update_line2', (obj) => {
             let line = obj.line
             let teacherphone = obj.teacherphone
             // if (currentGame&& currentGame.lines) {
                 // currentGame.lines[currentGame.lines.length - 1] = line
-
                 if(teacherphone === "20210101"){
                     socket.broadcast.to('20210101').emit('updating_line', obj)
                 }else if(teacherphone === "20210102"){
