@@ -33,7 +33,6 @@ module.exports = httpServer => {
 			const teacherphone = message.teacherphone
             const msg = message.msg
             const send = teacherphone + "：" + msg
-            console.log(send);
             // 发送消息给其他用户
             if(teacherphone === "20210101"){
                 server.sockets.in('20210101').emit('user_send', send)
@@ -53,17 +52,11 @@ module.exports = httpServer => {
             const sid = socket.id
             let teacherphone = obj.teacherphone
             const type = obj.type
-            // console.log(teacherphone + " " + type);
             // 添加用户信息
             user2socket[teacherphone] = sid
             socket2user[sid] = teacherphone
             if(teacherphone === "1"){
-                // console.log(stuList);
-                // for (let i = 0; i < stuList.length; i++) {
-                //     socket.join(stuList[i])
-                // }
                 for (let i = 20210101; i < 20210121; i++) {
-                    // console.log(i.toString());
                     socket.join(i.toString())
                 }
             }else{
@@ -165,7 +158,6 @@ module.exports = httpServer => {
             let teacherphone = obj.teacherphone
             let id = obj.id
             let stucode = "202101" + id
-            // console.log(stucode);
             socket.broadcast.to(stucode).emit('teastarting_line', obj)
         })
         socket.on('teacherNew_line', (obj) => {
@@ -173,7 +165,6 @@ module.exports = httpServer => {
             let teacherphone = obj.teacherphone
             let id = obj.id
             let stucode = "2021010" + id
-            console.log(stucode);
             socket.broadcast.to(stucode).emit('studentstarting_line', obj)
         })
         socket.on('new_line2', (obj) => {
@@ -184,10 +175,6 @@ module.exports = httpServer => {
                 }else if(teacherphone === "20210102"){
                     socket.broadcast.to('20210102').emit('starting_line', obj)
                 }else if(teacherphone === "1"){
-                    // console.log(1);
-                    // console.log(obj);
-                    // socket.broadcast.to('20210102').emit('user_send', "123")
-                    // socket.broadcast.to('20210101').emit('studentstarting_line', obj)
                     socket.broadcast.to('20210102').emit('studentstarting_line2', obj)
                 }
 
@@ -199,9 +186,7 @@ module.exports = httpServer => {
             let teacherphone = obj.teacherphone
             let id = obj.id
             let stucode = "2021010" + id
-            // console.log(obj);
             if(stucode === "2021010undefined"){
-                // console.log(teacherphone);
                 socket.broadcast.to(teacherphone).emit('studentupdating_line', obj)
             }
             socket.broadcast.to(stucode).emit('studentupdating_line2', obj)
@@ -229,6 +214,13 @@ module.exports = httpServer => {
                 // socket.broadcast.emit('updating_line', line)
             // }
         })
+        socket.on('changeTopic', (obj) => {
+            let id = obj.id
+            let indexTopic = obj.indexTopic
+            socket.broadcast.to(id).emit('changeTopic', obj)
+        })
+
+        
         // 【事件】客户端断开连接
         // ------------------------------------------------------------
         socket.on('disconnect', () => {

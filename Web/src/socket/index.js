@@ -85,6 +85,11 @@ socket.on('studentupdating_line2', lastLine => {
   // console.log(lastLine.line);
   store.commit('teacherupdateLine2', lastLine)
 })
+socket.on('changeTopic', obj => {
+  // console.log(lastLine.line);
+  store.commit('teachangeTopic', obj)
+})
+
 socket.on('game_answered', ({ alreadyDone, success, teacherphone, answer }) => {
   if (alreadyDone) {
     MessageBox.alert('当前问题已经被回答，您不能继续回答了！')

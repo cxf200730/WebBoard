@@ -41,7 +41,7 @@ export default {
       const that= this
       this.$refs.loginForm.validate(async flag => {
         if (!flag) return
-        that.axios.post('http://192.168.51.104:3000/student/join',null,{
+        that.axios.post('http://192.168.51.109:3000/student/join',null,{
             params:{
                 // params就是query参
                 classcode:that.formData.classcode,

@@ -5,6 +5,11 @@ class teacherModel {
 	findAll(){
 		return db.query( 'select * from teacher ', [])
 	}
+	//获取题目
+	getTopic(){
+		const sql = "SELECT * from stuexam"
+		return db.query( sql, [])
+	}
 
 	//添加老师(注册)
 	addTeacher(body){

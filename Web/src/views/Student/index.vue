@@ -85,7 +85,7 @@ export default {
     //   passive: false
     // });
 
-    // 禁用双指放大
+    //禁用双指放大
     // document.documentElement.addEventListener('touchstart', function (event) {
     //   if (event.touches.length > 1) {
     //       event.preventDefault();
@@ -135,7 +135,7 @@ export default {
   padding: 0;
   width: 100%;
   // min-height: 97%;
-  // max-height: 97%;
+  max-height: 97%;
   // background-color: aqua;
   // overflow: hidden;
   // max-height: 95%;

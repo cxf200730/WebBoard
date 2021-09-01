@@ -1,10 +1,10 @@
-// const express = require('express')
-// const router = express.Router()
-// const mysql = require('mysql')
-// const { getExam } = require('../service/examServer.js')
+const express = require('express')
+const router = express.Router()
+const mysql = require('mysql')
+const { getExam,addTopic } = require('../service/examServer.js')
 
-// router.get('/', getExam)
+router.get('/', getExam)
 // router.post('/addexam',addExam)
-// router.post('/addtopic',addTopic)
+router.post('/addtopic',addTopic)
 
-// module.exports = router 
+module.exports = router
