@@ -85,7 +85,7 @@ socket.on('studentupdating_line2', lastLine => {
   // console.log(lastLine.line);
   store.commit('teacherupdateLine2', lastLine)
 })
-socket.on('changeTopic', obj => {
+socket.on('teachangeTopic', obj => {
   // console.log(lastLine.line);
   store.commit('teachangeTopic', obj)
 })

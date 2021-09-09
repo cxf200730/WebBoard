@@ -20,7 +20,6 @@ class studentModel {
 		const exam_code = body.exam_code
 		const topic_index = body.topic_index
 		const stuanswer = JSON.stringify(body.stuanswer)
-		// const update_answer = body.update_answer || null
 		const fintime = body.fintime
 		const sql = "insert into stuexam(stucode,room,exam_code,topic_index,stuanswer,fintime) values" +
 		"('" + stucode + "','" +room + "','" + exam_code +"','" + topic_index +"','" + 
@@ -34,23 +33,19 @@ class studentModel {
 		const sql = "SELECT * from stuexam where stucode = '" + stucode + "'"
 		return db.query( sql, [])
 	}
-	//添加答题内容
+	//查找要修改的题目
 	updateTopic(body){
-		console.log(body);
 		const stucode = body.stucode
 		const room = body.room
 		const exam_code = body.exam_code
 		const topic_index = body.topic_index
-		const stuanswer = body.stuanswer
-		// console.log(stucode);
 		const sql = "SELECT * from stuexam where stucode = '" + stucode +
 		"' and room = '" + room + "' and exam_code = '" + exam_code + "' and topic_index = '" + 
 		topic_index + "'"
 		return db.query( sql, [])
 	}
-	//添加答题内容
+	//修改内容
 	updateTopic2(body){
-		console.log(body);
 		const stucode = body.stucode
 		const room = body.room
 		const exam_code = body.exam_code
@@ -58,6 +53,18 @@ class studentModel {
 		const stuanswer = JSON.stringify(body.stuanswer)
 		// console.log(stucode);
 		const sql = "update stuexam set stuanswer = '" + stuanswer + "' where stucode = '" + stucode + "' and topic_index = '" + topic_index + "'" 
+		return db.query( sql, [])
+	}
+	// 保存老师画的点
+	updateTopic3(body){
+		const stucode = body.stucode
+		const room = body.room
+		const exam_code = body.exam_code
+		const topic_index = body.topic_index
+		const updateanswer = JSON.stringify(body.updateanswer)
+		const sql = "update stuexam set updateanswer = '" + updateanswer + "' where stucode = '" + stucode + "' and topic_index = '" + topic_index + "'" 
+		console.log(sql);
+
 		return db.query( sql, [])
 	}
 	//获取试卷

@@ -6,11 +6,12 @@ module.exports = {
   devServer: {
     proxy: {
       '/socket.io': {
-        target: 'http://192.168.51.109:3000',
+        target: 'http://192.168.51.117:3000',
         ws: true, //代理websockets
         changeOrigin: true, // 是否跨域，虚拟的站点需要更管origin
       }
-    }
+    },
+    // https: true
   },
   configureWebpack: {
     plugins: [

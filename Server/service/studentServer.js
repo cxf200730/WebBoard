@@ -29,6 +29,12 @@ class studentServer {
 		const { results } = await studentModel.updateTopic2(body)
 		res.json({ err_code: 0,  message: results})
 	}
+	async updateTopic3( req, res, next){
+		// console.log(req.body);
+		const body = req.body;
+		const { results } = await studentModel.updateTopic3(body)
+		res.json({ err_code: 0,  message: results})
+	}
 	async saveExam( req, res, next){
 		console.log(req.body);
 		const body = req.body;

@@ -48,11 +48,11 @@ export default {
       let url = ""
       let type = ""
       if(str === "teacher") {
-        url = 'http://192.168.51.109:3000/teacher/login'
+        url = 'http://192.168.51.117:3000/teacher/login'
         type = "teacher"
         localStorage.setItem('type', type)
       }else{
-        url = 'http://192.168.51.109:3000/student/login'
+        url = 'http://192.168.51.117:3000/student/login'
         type = "student"
         localStorage.setItem('type', type)
       }

@@ -18,7 +18,9 @@ const state = {
   teacherLines2:Array.apply(null,Array(20)).map(() => []),
   indexTopic:Array.apply(null,Array(20)).map(() => 0),
   initexam:[],
-  stuTopic:Array.apply(null,Array(26)).map(() => [[]])
+  stuTopic:Array.apply(null,Array(26)).map(() => [[]]),
+  stuTopic2:Array.apply(null,Array(26)).map(() => [[]]),
+  upcount:1
 }
 
 const mutations = {
@@ -41,12 +43,21 @@ const mutations = {
   initstuTopic(state,topic){
     // console.log(topic);
     // state.stuTopic = topic
+    state.stuTopic = Array.apply(null,Array(26)).map(() => [[]])
     for (let i = 0; i < topic.length; i++) {
       if(topic[i].length != 0){
         state.stuTopic[i] = topic[i]
       }
     }
     // console.log(state.stuTopic);
+  },
+  initstuTopic2(state,topic){
+    state.stuTopic2 = Array.apply(null,Array(26)).map(() => [[]])
+    for (let i = 0; i < topic.length; i++) {
+      if(topic[i].length != 0){
+        state.stuTopic2[i] = topic[i]
+      }
+    }
   },
   updateConnected(state, connected) {
     state.connected = connected
@@ -155,13 +166,12 @@ const mutations = {
     state.lines.push(newLine)
   },
   clearLine(state) {
-    
     state.lines = []
-    // state.savelines = []
+  },
+  clearteacherLine(state,id) {
+    state.teacherLines[id].length = 0
   },
   clearsaveLine(state) {
-    
-    // state.lines = []
     state.savelines = []
   },
   teacherdrawNewLine(state, qq) {
@@ -232,14 +242,108 @@ const mutations = {
   },
 
   teachangeTopic(state, obj) {
+    const upcount = state.upcount
+    state.upcount = obj.indexTopic
+    // 是否需要更新
+    const isupdate = obj.isupdate
+    // 学号后两位
     const temp = obj.id.slice(6,obj.id.length)
+    // 现在显示的题号
+    const indexTopic = obj.indexTopic
+    // 当前显示题目下标的数组
     let count = state.indexTopic
-    count[parseInt(temp) - 1] = obj.indexTopic-1
+    // 显示对应学生的下标改为当前下标
+    count[parseInt(temp) - 1] = indexTopic - 1
     state.indexTopic = []
     state.indexTopic = count
-    state.teacherLines[parseInt(temp) - 1].length = 0
+    // 如果有数据变化，需要更新
+    // 0不更新  1只更新学生  10只更新老师  11同时更新学生和老师
+    // 只更新学生
+    if(isupdate === 1){
+      let mid = []
+      for (let i = 0; i < state.teacherLines[parseInt(temp) - 1].length; i++) {
+        mid[i] = state.teacherLines[parseInt(temp) - 1][i] 
+      }
+      state.teacherLines[parseInt(temp) - 1].length = 0
+      if(state.stuTopic[parseInt(temp) - 1][upcount-1] === undefined){
+        state.stuTopic[parseInt(temp) - 1][upcount-1] = mid
+      }else{
+        let oldlines = []
+        for (let i = 0; i < state.stuTopic[parseInt(temp) - 1][upcount-1].length; i++) {
+          oldlines[i] = state.stuTopic[parseInt(temp) - 1][upcount-1][i];
+        }
+        for (let i = 0; i < mid.length; i++) {
+          oldlines.push(mid[i])
+        }
+        state.stuTopic[parseInt(temp) - 1][upcount-1] = oldlines
+      }
+    }
+    else if(isupdate === 10){
+      // 只更新老师
+      let mid = []
+      for (let i = 0; i < state.teacherLines2[parseInt(temp) - 1].length; i++) {
+        mid[i] = state.teacherLines2[parseInt(temp) - 1][i] 
+      }
+      state.teacherLines2[parseInt(temp) - 1].length = 0
+      // console.log(a-1);
+      if(state.stuTopic2[parseInt(temp) - 1][upcount-1] === undefined){
+        state.stuTopic2[parseInt(temp) - 1][upcount-1] = mid
+      }
+      else{
+        let oldlines = []
+        for (let i = 0; i < state.stuTopic2[parseInt(temp) - 1][upcount-1].length; i++) {
+          oldlines[i] = state.stuTopic2[parseInt(temp) - 1][upcount-1][i];
+        }
+        for (let i = 0; i < mid.length; i++) {
+          oldlines.push(mid[i])
+        }
+        state.stuTopic2[parseInt(temp) - 1][upcount-1] = oldlines
+      }
 
-    
+    }
+    else if(isupdate === 11){
+      let mid = []
+      for (let i = 0; i < state.teacherLines[parseInt(temp) - 1].length; i++) {
+        mid[i] = state.teacherLines[parseInt(temp) - 1][i] 
+      }
+      state.teacherLines[parseInt(temp) - 1].length = 0
+      if(state.stuTopic[parseInt(temp) - 1][upcount-1] === undefined){
+        state.stuTopic[parseInt(temp) - 1][upcount-1] = mid
+      }else{
+        let oldlines = []
+        for (let i = 0; i < state.stuTopic[parseInt(temp) - 1][upcount-1].length; i++) {
+          oldlines[i] = state.stuTopic[parseInt(temp) - 1][upcount-1][i];
+        }
+        for (let i = 0; i < mid.length; i++) {
+          oldlines.push(mid[i])
+        }
+        state.stuTopic[parseInt(temp) - 1][upcount-1] = oldlines
+      }
+
+      // 只更新老师
+      let mid2 = []
+      for (let i = 0; i < state.teacherLines2[parseInt(temp) - 1].length; i++) {
+        mid2[i] = state.teacherLines2[parseInt(temp) - 1][i] 
+      }
+      state.teacherLines2[parseInt(temp) - 1].length = 0
+      // console.log(a-1);
+      if(state.stuTopic2[parseInt(temp) - 1][upcount-1] === undefined){
+        state.stuTopic2[parseInt(temp) - 1][upcount-1] = mid2
+      }
+      else{
+        let oldlines = []
+        for (let i = 0; i < state.stuTopic2[parseInt(temp) - 1][upcount-1].length; i++) {
+          oldlines[i] = state.stuTopic2[parseInt(temp) - 1][upcount-1][i];
+        }
+        for (let i = 0; i < mid2.length; i++) {
+          oldlines.push(mid2[i])
+        }
+        state.stuTopic2[parseInt(temp) - 1][upcount-1] = oldlines
+      }
+    }
+    else{
+
+    }
   },
 
 

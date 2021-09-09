@@ -217,7 +217,7 @@ module.exports = httpServer => {
         socket.on('changeTopic', (obj) => {
             let id = obj.id
             let indexTopic = obj.indexTopic
-            socket.broadcast.to(id).emit('changeTopic', obj)
+            socket.broadcast.to(id).emit('teachangeTopic', obj)
         })
 
         

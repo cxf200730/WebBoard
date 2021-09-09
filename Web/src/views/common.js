@@ -12,7 +12,7 @@ const tokenUrl = 'https://wsliveroom-alpha.zego.im:8282/token';
 let userID = 'sample' + new Date().getTime();
 let publishStreamId = 'webrtc' + new Date().getTime();
 let zg;
-let appID = 4163001106; // 请从官网控制台获取对应的appID
+let appID = 1610159475; // 请从官网控制台获取对应的appID
 let server = 'wss://webliveroom-test.zego.im/ws'; // 请从官网控制台获取对应的server地址，否则可能登录失败
 
 let cgiToken = '';
